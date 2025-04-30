@@ -1,11 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Numbers</title>
+    <title>Найди число</title>
+    <link rel="stylesheet" href="static/styles/style.css">
+    <script src="code.js"></script>
 </head>
 <body>
-    
-</body>
-</html>
+    <div class="container">
+      <section class="game-screen" id="intro-screen">
+        <div class="game-screen__heading">
+          <h3 class="game-screen__game-title">Найди число</h3>
+          <p class="game-screen__game-descript">Тренажер на внимание</p>
+        </div>
+        <div class="desc-heading">Тренирует:</div>
+        <div class="game-screen__content">
+          <ul class="features-list">
+            <li>
+              <div class="icon icon-1"></div>
+              <div>
+                <strong>Произвольное внимание</strong><br />
+                Научитесь концентрировать внимание только на важном
+              </div>
+            </li>
+            <li>
+              <div class="icon icon-2"></div>
+              <div>
+                <strong>Концентрацию и переключение внимания</strong><br />
+                Позволит не упускать из виду важные детали
+              </div>
+            </li>
+            <li>
+              <div class="icon icon-3"></div>
+              <div>
+                <strong>Зрительное восприятие</strong><br />
+                Сможете быстро находить основные мысли в текстах
+              </div>
+            </li>
+          </ul>
+          <button class="start-button">ДАЛЕЕ</button>
+        </div>
+      </section>
+
+      <section class="screen screen--rules" id="rules-screen" style="display: none;">
+        <div class="rules-content">
+          <h3>Правила игры</h3>
+          <p>Найдите нужное число как можно быстрее. Будьте внимательны!</p>
+          <button class="start-btn" id="nextBtn">Начать</button>
+        </div>
+      </section>
+    </div>
+  </body>
+  </html>
