@@ -141,28 +141,118 @@ body {
     height: 525px;
   }
 
-  .cube {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    height: 480px;
-    width: 550px;
-    background-color: #7c3aed;
-    justify-content: space-between;
-  }
-
-  .number-1 {
+  .rules-screen-layout {
     display: flex;
-    background-color: aqua;
-    width: 100px;
-    height: 50px;
-  }
-
-  .number-2 {
-    display: flex;
-    background-color: rgb(87, 170, 40);
-    width: 100px;
-    height: 50px;
+    justify-content: center;
+    align-items: center;
+    background-color: #45c2f4;
   }
   
+  .game-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 520px;
+    height: 400px;
+    box-sizing: border-box;
+    background-color: #45c2f4;
+  }
+  
+  .top-section,
+  .middle-section,
+  .bottom-section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+ .task-box {
+   background-color: #3cb4ec;
+   color: white;
+   padding: 20px 30px;
+   font-size: 18px;
+   font-weight: bold;
+   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+ }
+ 
+ .task-box strong {
+   font-size: 32px;
+ }
+   
+ .grid {
+   display: grid;
+   grid-template-columns: repeat(3, 100px);
+   grid-template-rows: repeat(2, 100px);
+   gap: 16px;
+   margin: 20px 0;
+ }
+   
+ .color-orange {
+   background-color: #f97316;
+ }
+ 
+ .color-purple-light {
+   background-color: #a78bfa;
+   opacity: 50%;
+ }
+ 
+ .color-purple {
+   background-color: #8b5cf6;
+   opacity: 50%;
+ }
+ 
+ .color-green-light {
+   background-color: rgba(134, 239, 172, 0.6); 
+   position: relative; 
+   overflow: visible; 
+ }
+ 
+ .color-green {
+   background-color: #4ade80;
+   opacity: 50%;
+ }
+ 
+ .color-cyan {
+   background-color: #45c2f4;
+   opacity: 50%;
+ }
+ 
+ 
+ .grid-item {
+   width: 100px;
+   height: 100px;
+   color: white;
+   font-size: 28px;
+   font-weight: bold;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+ }
+   
+ .tap-text {
+   color: white;
+   font-size: 14px;
+   text-align: center;
+ }
+ 
+ .pointer-container {
+   position: relative;
+ }
+ 
+ .pointer-image {
+   position: absolute;
+   width: 120px; 
+   height: 120px;
+   background-image: url('https://wikium.ru/games_build/images/c1e150a636718d0405f598b86b7e06f2.svg');
+   background-size: contain;
+   background-repeat: no-repeat;
+   background-position: center;
+   
+  
+   top: -55px;
+   left: -10px;
+   pointer-events: none;
+   z-index: 10;
+ }

@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const introScreen = document.getElementById("intro-screen");
   const rulesScreen = document.getElementById("rules-screen");
 
-  if (nextBtn && introScreen && rulesScreen) {
+  if (nextBtn && introScreen) {
     nextBtn.addEventListener("click", function () {
       introScreen.style.display = "none";
       rulesScreen.style.display = "block";
