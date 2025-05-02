@@ -8,7 +8,7 @@
     <script src="code.js"></script>
 </head>
 <body>
-    <div class="container">
+    <div class="container">   
       <section class="game-screen" id="intro-screen">
         <div class="game-screen__heading">
           <h3 class="game-screen__game-title">Найди число</h3>
@@ -45,9 +45,8 @@
 
       <section class="screen rules-screen-layout" id="rules-screen" style="display: none;">
         <div class="game-box">
-          
           <div class="top-section">
-            <div class="task-box">
+            <div class="task-box">           
               <p>Найдите указанное число: <strong>75</strong></p>
             </div>
           </div>
@@ -65,11 +64,15 @@
             </div>
           </div>
       
-          <div class="bottom-section">
-            <p class="tap-text">Нажмите на экран,<br>чтобы продолжить</p>
+          <div id="click-to-continue">
+            Кликните, чтобы продолжить
           </div>
           
         </div>
+      </section>
+
+      <section class="screen countdown-screen" id="countdown-screen" style="display: none;">
+        <div class="countdown-number" id="countdown-number">3</div>
       </section>
     </div>
 
