@@ -5,10 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Найди число</title>
     <link rel="stylesheet" href="static/styles/style.css">
-    <script src="code.js"></script>
 </head>
 <body>
-    <div class="container">   
+    <div class="container">
+      <div id="game-header" style="display: none; justify-content: space-around; padding: 10px; background-color: #66d3f7; font-weight: bold; font-family: sans-serif;">
+        <div>ВРЕМЯ <span id="timer">01:00</span></div>
+        <div id="level">УРОВЕНЬ 1-12</div>
+        <div>ОЧКИ 0</div>
+        <div>БОНУС ●●●●●x1</div>
+      </div>
       <section class="game-screen" id="intro-screen">
         <div class="game-screen__heading">
           <h3 class="game-screen__game-title">Найди число</h3>
@@ -73,6 +78,20 @@
 
       <section class="screen countdown-screen" id="countdown-screen" style="display: none;">
         <div class="countdown-number" id="countdown-number">3</div>
+      </section>
+
+      <section class="screen" id="game-screen" style="display: none;">
+        <div class="game-box">
+          <div class="top-section">
+            <div class="task-box">
+              Найдите указанное число: <strong>---</strong>
+            </div>
+          </div>
+          <div class="middle-section">
+            <div class="grid" id="game-grid">
+            </div>
+          </div>
+        </div>
       </section>
     </div>
 
