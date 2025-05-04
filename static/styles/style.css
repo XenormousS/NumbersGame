@@ -181,12 +181,14 @@ body {
   }
   
   .middle-section {
-    margin-top: 40px;  
+    margin-top: 40px;
     margin-bottom: auto;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
+    flex-wrap: wrap;
+    gap: 10px;
   }
   
  .task-box {
@@ -202,13 +204,17 @@ body {
    font-size: 32px;
  }
    
+ 
  .grid {
-   display: grid;
-   grid-template-columns: repeat(3, 100px);
-   grid-template-rows: repeat(2, 100px);
-   gap: 16px;
-   margin: 0;
- }
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); 
+  grid-template-rows: repeat(2, 1fr); 
+  gap: 10px;
+  justify-items: center;
+  align-items: center;
+  width: 100%;
+  max-width: 600px; 
+}
    
  .color-orange {
    background-color: #f97316;
@@ -242,15 +248,24 @@ body {
  
  
  .grid-item {
-   width: 100px;
-   height: 100px;
-   color: white;
-   font-size: 28px;
-   font-weight: bold;
-   display: flex;
-   justify-content: center;
-   align-items: center;
- }
+  width: 140px;
+  height: 140px;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  font-size: 24px; 
+}
+
+body.game-started .grid-item {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1 / 1;
+}
    
  .tap-text {
    color: white;
@@ -263,20 +278,18 @@ body {
  }
  
  .pointer-image {
-   position: absolute;
-   width: 120px; 
-   height: 120px;
-   background-image: url('https://wikium.ru/games_build/images/c1e150a636718d0405f598b86b7e06f2.svg');
-   background-size: contain;
-   background-repeat: no-repeat;
-   background-position: center;
-   
-  
-   top: -55px;
-   left: -10px;
-   pointer-events: none;
-   z-index: 10;
- }
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  background-image: url('https://wikium.ru/games_build/images/c1e150a636718d0405f598b86b7e06f2.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  top: -55px;
+  left: -10px;
+  pointer-events: none;
+  z-index: 10;
+}
 
  .countdown-screen {
   display: flex;
@@ -308,6 +321,29 @@ body {
   color: #ffffff;
   margin: 20px 0;
   font-weight: bold;
+}
+
+#game-grid {
+  display: grid;
+  gap: 8px;
+  margin: 0 auto;
+
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  width: fit-content;
+}
+
+body.game-started #game-grid {
+  width: 100%;
+  max-width: 600px;
+  max-height: 60vh;
+  aspect-ratio: 1 / 1;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  grid-template-rows: none;
+}
+
+.grid-item:hover {
+  transform: scale(1.1);
 }
 
 @keyframes pop {
