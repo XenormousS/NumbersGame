@@ -93,8 +93,9 @@ document.addEventListener("DOMContentLoaded", function () {
     taskText.textContent = `Найди число: ${targetNumber}`;
   
     const fontSize = Math.max(1.2, 2.2 - (rows + cols) * 0.1);
+    const cellSize = Math.floor(500 / Math.max(rows, cols)); 
   
-    const colors = ["#f97316", "#a78bfa", "#8b5cf6", "#4ade80", "#45c2f4"]; 
+    const colors = ["#f97316", "#a78bfa", "#8b5cf6", "#4ade80", "#45c2f4"];
   
     numbers.forEach((num) => {
       const div = document.createElement('div');
@@ -104,6 +105,11 @@ document.addEventListener("DOMContentLoaded", function () {
       div.style.opacity = Math.random() < 0.5 ? '0.5' : '1';
       div.style.fontSize = `${fontSize}em`;
   
+
+      div.style.width = `${cellSize}px`;
+      div.style.height = `${cellSize}px`;
+  
+
       if (Math.random() < 0.3) {
         div.style.animation = 'float 1.5s ease-in-out infinite';
       }
@@ -126,7 +132,7 @@ document.addEventListener("DOMContentLoaded", function () {
           updateScoreDisplay();
           updateBonusDisplay();
   
-          startGameRound(); 
+          startGameRound();
         } else {
           comboStreak = 0;
           bonusMultiplier = 1;

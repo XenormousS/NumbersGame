@@ -215,6 +215,23 @@ body {
   width: 100%;
   max-width: 600px; 
 }
+
+.rules-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); 
+  grid-template-rows: repeat(2, 1fr); 
+  gap: 6px; /* меньшее расстояние между блоками */
+  justify-items: center;
+  align-items: center;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.rules-grid .grid-item {
+  width: 120px;
+  height: 120px;
+  font-size: 22px;
+}
    
  .color-orange {
    background-color: #f97316;
