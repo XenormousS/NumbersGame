@@ -8,6 +8,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const grid = document.getElementById("game-grid");
   const gameHeader = document.getElementById("game-header");
   const scoreEl = gameHeader.querySelector("div:nth-child(3)");
+  const endScreen = document.getElementById("end-screen");
+  const summaryText = document.getElementById("summary-text");
+  const restartBtn = document.getElementById("restartBtn");
 
   let currentRound = 0;
   const totalRounds = 12;
@@ -17,6 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let totalScore = 0;
   let roundTimer;
   let comboStreak = 0;
+  let timeExpired = false;
   let bonusMultiplier = 1;
 
   const percentIncreases = [0, 0.15, 0.20, 0.25, 0.27, 0.29, 0.31, 0.33, 0.35, 0.37, 0.39, 0.40];
@@ -66,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
       updateTimerDisplay();
       if (timeLeft <= 0) {
         clearInterval(roundTimer);
-        endGame();
+        timeExpired = true;
       }
     }, 1000);
   }
@@ -88,13 +92,14 @@ document.addEventListener("DOMContentLoaded", function () {
     grid.style.gap = '15px';
     grid.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
   
-    const numbers = Array.from({ length: totalCells }, () => Math.floor(Math.random() * 1000 + 1));
+    const maxNumber = currentRound >= 8 ? 10000 : 1000;
+    const numbers = Array.from({ length: totalCells }, () => Math.floor(Math.random() * maxNumber + 1));
     const targetNumber = numbers[Math.floor(Math.random() * numbers.length)];
   
+    taskText.classList.remove('slide-in-right');
+    void taskText.offsetWidth; 
     taskText.textContent = `Найди число: ${targetNumber}`;
-    taskText.classList.remove('slide-in');
-    void taskText.offsetWidth;
-    taskText.classList.add('slide-in');
+    taskText.classList.add('slide-in-right');
   
     const fontSize = Math.max(1.2, 2.2 - (rows + cols) * 0.1);
     const gridWidth = Math.min(window.innerWidth * 0.9, 600); 
@@ -112,92 +117,77 @@ document.addEventListener("DOMContentLoaded", function () {
   
     const colors = ["#f97316", "#a78bfa", "#8b5cf6", "#4ade80", "#45c2f4"];
   
-    numbers.forEach((num) => {
-      const div = document.createElement('div');
-      div.classList.add('slide-in');
-      div.addEventListener('animationend', () => {
-      div.classList.remove('slide-in');
+    const divsToAnimate = [];
 
-      if (currentRound >= 4) {
+numbers.forEach((num) => {
+  const div = document.createElement('div');
+  div.classList.add('grid-item', 'hoverable');
+
+  const span = document.createElement('span');
+  span.textContent = num;
+  span.classList.add('cell-text');
+
+  div.appendChild(span);
+  div.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+  div.style.opacity = Math.random() < 0.5 ? '0.5' : '1';
+  div.style.fontSize = `${fontSize}em`;
+  div.style.width = `${cellSize}px`;
+  div.style.height = `${Math.floor(cellSize * 0.70)}px`;
+
+  grid.appendChild(div);
+
+  divsToAnimate.push({ div, span });
+
+  div.addEventListener('click', () => {
+    const levelIndex = Math.min(currentRound - 1, percentIncreases.length - 1);
+    if (num === targetNumber) {
+      const levelBonus = percentIncreases[levelIndex];
+      const gainedBase = Math.floor(lastScore + lastScore * levelBonus);
+  
+      comboStreak++;
+      bonusMultiplier = Math.min(Math.max(comboStreak, 1), 5);
+  
+      const gained = gainedBase * bonusMultiplier;
+      lastScore = gainedBase;
+      totalScore += gained;
+  
+      updateScoreDisplay();
+    } else {
+      comboStreak = 0;
+      bonusMultiplier = 1;
+    }
+  
+    updateBonusDisplay();
+  
+    if (timeExpired) {
+      endGame();
+    } else {
+      startGameRound();
+    }
+  });  
+});
+
+requestAnimationFrame(() => {
+  divsToAnimate.forEach(({ div, span }) => {
+    div.classList.add('slide-in-right');
+
+    if (currentRound >= 4) {
+      setTimeout(() => {
         const animationTypes = ['rotate', 'pulse', 'flicker'];
         const chosen = animationTypes[Math.floor(Math.random() * animationTypes.length)];
 
         if (chosen === 'rotate') {
-        span.classList.add('rotate');
-      } else if (chosen === 'pulse') {
-        div.style.animation = 'pulseSizeOnly 0.8s ease-in-out infinite';
-      } else if (chosen === 'flicker') {
-        div.style.animation = 'flickerOpacityOnly 0.8s ease-in-out infinite';
-      }
+          span.classList.add('rotate');
+        } else if (chosen === 'pulse') {
+          div.style.animation = 'pulseSizeOnly 0.8s ease-in-out infinite';
+        } else if (chosen === 'flicker') {
+          div.style.animation = 'flickerOpacityOnly 0.8s ease-in-out infinite';
+        }
+      }, 400);
     }
-}, { once: true });
-
-      
-      div.classList.add('grid-item');
-      const span = document.createElement('span');
-      span.textContent = num;
-      span.classList.add('cell-text');
-      div.appendChild(span);
-      div.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-      div.style.opacity = Math.random() < 0.5 ? '0.5' : '1';
-      div.style.fontSize = `${fontSize}em`;
-      taskText.addEventListener('animationend', () => {
-        taskText.classList.remove('slide-in');
-      }, { once: true });
-
-      const cellWidth = cellSize;
-      const cellHeight = Math.floor(cellSize * 0.70);
-
-      div.style.width = `${cellWidth}px`;
-      div.style.height = `${cellHeight}px`;
-  
-
-      if (Math.random() < 0.3) {
-        div.style.animation = 'float 1.5s ease-in-out infinite';
-      }
-  
-      div.addEventListener('click', () => {
-        const levelIndex = Math.min(currentRound - 1, percentIncreases.length - 1);
-        if (num === targetNumber) {
-          const levelBonus = percentIncreases[levelIndex];
-          const gainedBase = Math.floor(lastScore + lastScore * levelBonus);
-      
-          comboStreak++;
-          bonusMultiplier = Math.min(Math.max(comboStreak, 1), 5);
-      
-          const gained = gainedBase * bonusMultiplier;
-          lastScore = gainedBase;
-          totalScore += gained;
-      
-          updateScoreDisplay();
-        } else {
-          comboStreak = 0;
-          bonusMultiplier = 1;
-        }
-      
-        updateBonusDisplay();
-        startGameRound(); 
-      });
-      if (currentRound >= 4) {
-        const animationTypes = ['rotate', 'pulse', 'flicker'];
-      
-        if (Math.random() < 1) {
-          const chosen = animationTypes[Math.floor(Math.random() * animationTypes.length)];
-      
-          if (chosen === 'rotate') {
-            span.classList.add('rotate');
-          } else if (chosen === 'pulse') {
-            div.style.animation = 'pulseSizeOnly 0.8s ease-in-out infinite';
-          } else if (chosen === 'flicker') {
-            div.style.animation = 'flickerOpacityOnly 0.8s ease-in-out infinite';
-          }
-        }
-      }
-      
-      grid.appendChild(div);
-    });
-  }
-  
+  });
+});
+}
 
   function getGridSize(round) {
     if (round < 4) return { rows: 2, cols: 3 };      
@@ -233,6 +223,20 @@ document.addEventListener("DOMContentLoaded", function () {
     clearInterval(roundTimer);
     grid.innerHTML = '';
     taskText.textContent = 'Игра окончена!';
+  
+    const totalTimeSpent = 60 - timeLeft;
+    const minutes = Math.floor(totalTimeSpent / 60);
+    const seconds = totalTimeSpent % 60;
+  
+    gameHeader.style.display = "none";
+    document.getElementById("game-screen").style.display = "none";
+    endScreen.style.display = "block";
+  
+    summaryText.innerHTML = `
+      <p>Вы набрали <strong>${totalScore}</strong> очков.</p>
+      <p>Пройдено уровней: <strong>${currentRound - 1}</strong> из ${totalRounds}.</p>
+      <p>Время игры: <strong>${minutes}:${String(seconds).padStart(2, '0')}</strong></p>
+    `;
   }
 
 });

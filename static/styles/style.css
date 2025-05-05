@@ -277,6 +277,16 @@ body {
   font-size: 24px; 
 }
 
+.grid-item.hoverable {
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.grid-item.hoverable:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+  cursor: pointer;
+}
+
 body.game-started .grid-item {
   width: 100%;
   height: 100%;
@@ -343,7 +353,6 @@ body.game-started .grid-item {
   display: grid;
   gap: 8px;
   margin: 0 auto;
-
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
   width: fit-content;
@@ -356,6 +365,77 @@ body.game-started #game-grid {
   aspect-ratio: 1 / 1;
   grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
   grid-template-rows: none;
+}
+
+.slide-in-right {
+  animation: slideInRight 0.6s ease forwards;
+}
+
+.slide-in {
+  animation: slide-in 0.4s ease-out;
+  animation-delay: 0s;
+}
+
+.cell-text.rotate {
+  animation: rotateText 0.6s ease-in-out infinite;
+  display: inline-block;
+}
+
+#game-header {
+  display: none; 
+  justify-content: space-around; 
+  padding: 10px; 
+  background-color: #3cb4ec; 
+  font-weight: bold; 
+  font-family: sans-serif;
+  color: white;
+}
+
+#end-screen {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #45c2f4;
+  color: white;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.8s ease-out;
+  font-family: 'Arial', sans-serif;
+  height: 100vh;
+}
+
+#summary-text {
+  font-size: 24px;
+  line-height: 1.4;
+  font-weight: bold;
+  margin: 0;
+}
+
+#summary-text span {
+  font-weight: 800;
+}
+
+#restartBtn {
+  padding: 12px 30px;
+  font-size: 16px;
+  background-color: #7c3aed;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+}
+
+#restartBtn:hover {
+  background-color: #6a21dc;
+}
+
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 
@@ -371,11 +451,6 @@ body.game-started #game-grid {
   100% {
     transform: scale(1);
   }
-}
-
-.cell-text.rotate {
-  animation: rotateText 0.6s ease-in-out infinite;
-  display: inline-block;
 }
 
 @keyframes rotateText {
@@ -407,7 +482,16 @@ body.game-started #game-grid {
   }
 }
 
-.slide-in {
-  animation: slide-in 0.4s ease-out;
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
+
+
 

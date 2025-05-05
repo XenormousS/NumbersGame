@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="container">
-      <div id="game-header" style="display: none; justify-content: space-around; padding: 10px; background-color: #66d3f7; font-weight: bold; font-family: sans-serif;">
+      <div id="game-header">
         <div>ВРЕМЯ <span id="timer">01:00</span></div>
         <div id="level">УРОВЕНЬ 1-12</div>
         <div>ОЧКИ 0</div>
@@ -93,6 +93,15 @@
           </div>
         </div>
       </section>
+      <div id="end-screen">
+        <div id="summary-text">
+          Игра окончена!<br>
+          Вы набрали <span></span><br>
+          Пройдено уровней: <span></span><br>
+          Время игры: <span></span>
+        </div>
+        <button id="restartBtn">Играть снова</button>
+      </div>
     </div>
 
     <script src="code.js"></script>
