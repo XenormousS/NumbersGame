@@ -85,29 +85,71 @@ document.addEventListener("DOMContentLoaded", function () {
   
     grid.innerHTML = '';
     grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+    grid.style.gap = '15px';
     grid.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
   
-    const numbers = Array.from({ length: totalCells }, () => Math.floor(Math.random() * 90 + 10));
+    const numbers = Array.from({ length: totalCells }, () => Math.floor(Math.random() * 1000 + 1));
     const targetNumber = numbers[Math.floor(Math.random() * numbers.length)];
   
     taskText.textContent = `Найди число: ${targetNumber}`;
+    taskText.classList.remove('slide-in');
+    void taskText.offsetWidth;
+    taskText.classList.add('slide-in');
   
     const fontSize = Math.max(1.2, 2.2 - (rows + cols) * 0.1);
-    const cellSize = Math.floor(500 / Math.max(rows, cols)); 
+    const gridWidth = Math.min(window.innerWidth * 0.9, 600); 
+    let baseCellSize = Math.floor(gridWidth / Math.max(rows, cols));
+    if (currentRound >= 10) {
+      baseCellSize *= 0.72; 
+    } else if (currentRound >= 7) {
+      baseCellSize *= 0.65;
+    } else if (currentRound >= 4) {
+      baseCellSize *= 0.8;
+    } else {
+      baseCellSize *= 0.84;
+    }
+    const cellSize = Math.floor(baseCellSize); 
   
     const colors = ["#f97316", "#a78bfa", "#8b5cf6", "#4ade80", "#45c2f4"];
   
     numbers.forEach((num) => {
       const div = document.createElement('div');
+      div.classList.add('slide-in');
+      div.addEventListener('animationend', () => {
+      div.classList.remove('slide-in');
+
+      if (currentRound >= 4) {
+        const animationTypes = ['rotate', 'pulse', 'flicker'];
+        const chosen = animationTypes[Math.floor(Math.random() * animationTypes.length)];
+
+        if (chosen === 'rotate') {
+        span.classList.add('rotate');
+      } else if (chosen === 'pulse') {
+        div.style.animation = 'pulseSizeOnly 0.8s ease-in-out infinite';
+      } else if (chosen === 'flicker') {
+        div.style.animation = 'flickerOpacityOnly 0.8s ease-in-out infinite';
+      }
+    }
+}, { once: true });
+
+      
       div.classList.add('grid-item');
-      div.textContent = num;
+      const span = document.createElement('span');
+      span.textContent = num;
+      span.classList.add('cell-text');
+      div.appendChild(span);
       div.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
       div.style.opacity = Math.random() < 0.5 ? '0.5' : '1';
       div.style.fontSize = `${fontSize}em`;
-  
+      taskText.addEventListener('animationend', () => {
+        taskText.classList.remove('slide-in');
+      }, { once: true });
 
-      div.style.width = `${cellSize}px`;
-      div.style.height = `${cellSize}px`;
+      const cellWidth = cellSize;
+      const cellHeight = Math.floor(cellSize * 0.70);
+
+      div.style.width = `${cellWidth}px`;
+      div.style.height = `${cellHeight}px`;
   
 
       if (Math.random() < 0.3) {
@@ -115,31 +157,43 @@ document.addEventListener("DOMContentLoaded", function () {
       }
   
       div.addEventListener('click', () => {
+        const levelIndex = Math.min(currentRound - 1, percentIncreases.length - 1);
         if (num === targetNumber) {
-          const levelIndex = Math.min(currentRound - 1, percentIncreases.length - 1);
           const levelBonus = percentIncreases[levelIndex];
-  
           const gainedBase = Math.floor(lastScore + lastScore * levelBonus);
-  
+      
           comboStreak++;
-          bonusMultiplier = comboStreak < 1 ? 1 : Math.min(comboStreak, 5);
-          if (bonusMultiplier < 1) bonusMultiplier = 1;
-  
+          bonusMultiplier = Math.min(Math.max(comboStreak, 1), 5);
+      
           const gained = gainedBase * bonusMultiplier;
           lastScore = gainedBase;
           totalScore += gained;
-  
+      
           updateScoreDisplay();
-          updateBonusDisplay();
-  
-          startGameRound();
         } else {
           comboStreak = 0;
           bonusMultiplier = 1;
-          updateBonusDisplay();
         }
+      
+        updateBonusDisplay();
+        startGameRound(); 
       });
-  
+      if (currentRound >= 4) {
+        const animationTypes = ['rotate', 'pulse', 'flicker'];
+      
+        if (Math.random() < 1) {
+          const chosen = animationTypes[Math.floor(Math.random() * animationTypes.length)];
+      
+          if (chosen === 'rotate') {
+            span.classList.add('rotate');
+          } else if (chosen === 'pulse') {
+            div.style.animation = 'pulseSizeOnly 0.8s ease-in-out infinite';
+          } else if (chosen === 'flicker') {
+            div.style.animation = 'flickerOpacityOnly 0.8s ease-in-out infinite';
+          }
+        }
+      }
+      
       grid.appendChild(div);
     });
   }
