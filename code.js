@@ -48,30 +48,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   if (homeBtn) {
-    homeBtn.addEventListener("click", function () {
-
-      rulesScreen.style.display = "none";
-      countdownScreen.style.display = "none";
-      document.getElementById("game-screen").style.display = "none";
-      gameHeader.style.display = "none";
-      endScreen.style.display = "none";
-      resultsScreen.style.display = "none";
-  
-
-      introScreen.style.display = "block";
-  
-
-      currentRound = 0;
-      timeLeft = 60;
-      timerStarted = false;
-      lastScore = 42;
-      totalScore = 0;
-      comboStreak = 0;
-      timeExpired = false;
-      bonusMultiplier = 1;
-      successfulRounds = 0;
-  
-      clearInterval(roundTimer);
+    homeBtn.addEventListener("click", function() {
+      location.reload();
     });
   }
 
@@ -273,12 +251,9 @@ requestAnimationFrame(() => {
   function showResults() {
     const results = JSON.parse(localStorage.getItem("results") || "[]");
   
-    resultsList.innerHTML = `
-      <p><strong>Текущий результат:</strong> ${totalScore}</p>
-      <hr>
-      <p><strong>Лучшие результаты:</strong></p>
-      ${results.map((s, i) => `<p>${i + 1}) ${s} очков</p>`).join("")}
-    `;
+    document.getElementById("current-result").textContent = totalScore;
+    const topResultsEl = document.getElementById("top-results");
+    topResultsEl.innerHTML = results.map((s, i) => `<p>${i + 1}) ${s} очков</p>`).join("");
   }
 
   function endGame() {
@@ -298,12 +273,11 @@ requestAnimationFrame(() => {
     const correctAnswers = successfulRounds;
     const accuracyPercent = Math.round((correctAnswers / totalRounds) * 100);
   
-    summaryText.innerHTML = `
-      <p>Вы набрали <strong>${scoreText}</strong> очков.</p>
-      <p>Успешно пройдено уровней: <strong>${correctAnswers}</strong> из ${totalRounds}.</p>
-      <p>Точность: <strong>${accuracyPercent}%</strong></p>
-      <p>Время игры: <strong>${minutes}:${String(seconds).padStart(2, '0')}</strong></p>
-    `;
+    document.getElementById("summary-score").textContent = scoreText;
+    document.getElementById("summary-correct").textContent = correctAnswers;
+    document.getElementById("summary-total").textContent = totalRounds;
+    document.getElementById("summary-accuracy").textContent = `${accuracyPercent}%`;
+    document.getElementById("summary-time").textContent = `${minutes}:${String(seconds).padStart(2, '0')}`;
   
     const statElements = document.querySelectorAll("#end-screen .stats b");
   
@@ -312,19 +286,5 @@ requestAnimationFrame(() => {
       statElements[1].textContent = `${correctAnswers} из ${totalRounds}`;
       statElements[2].textContent = `${accuracyPercent}%`;
     }
-  }
-  if (restartBtn) {
-    restartBtn.addEventListener("click", function () {
-      resultsScreen.style.display = "none";
-      introScreen.style.display = "block";
-  
-      currentRound = 0;
-      timeLeft = 60;
-      totalScore = 0;
-      comboStreak = 0;
-      bonusMultiplier = 1;
-      timeExpired = false;
-      gameHeader.style.display = "none";
-    });
   }
 });
