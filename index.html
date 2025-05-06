@@ -94,15 +94,22 @@
         </div>
       </section>
       <div id="end-screen">
-        <div id="summary-text">
-          Игра окончена!<br>
-          Вы набрали <span></span><br>
-          Пройдено уровней: <span></span><br>
-          Время игры: <span></span>
+        <div class="end-header">
+          <div class="overlay"></div>
+          <h2>Ваши результаты</h2>
         </div>
-        <button id="restartBtn">Играть снова</button>
+        <div id="summary-text" class="summary"></div>
+        <button id="nextBtn2">ДАЛЕЕ</button>
       </div>
-    </div>
+
+      <div id="results-screen" style="display: none;">
+        <div class="end-header">
+          <div class="overlay"></div>
+          <h2>Ваши результаты</h2>
+        </div>
+        <div class="summary" id="results-list"></div>
+        <button id="homeBtn">На главную</button>
+      </div>
 
     <script src="code.js"></script>
   </body>

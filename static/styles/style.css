@@ -392,44 +392,119 @@ body.game-started #game-grid {
 }
 
 #end-screen {
-  display: none;
+  display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: #45c2f4;
-  color: white;
-  text-align: center;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  animation: fadeIn 0.8s ease-out;
-  font-family: 'Arial', sans-serif;
-  height: 100vh;
+  justify-content: space-between;
+  min-height: 100vh; 
+  box-sizing: border-box;
 }
 
-#summary-text {
-  font-size: 24px;
-  line-height: 1.4;
-  font-weight: bold;
+.end-header {
+  position: relative;
+  background-image: url('https://wikium.ru/games_build/images/dfa5695938b3bf438aa3e7e69eeea005.svg');
+  background-size: cover;
+  background-position: center;
+  height: 140px;
+  width: 100%;
+  max-width: 520px;
+  margin: 10px auto 10px auto;
+  border-radius: 0; 
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.end-header .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4); 
+  z-index: 1;
+}
+
+.end-header h2 {
+  position: relative;
+  z-index: 2;
+  font-size: 1.8em;
   margin: 0;
 }
 
-#summary-text span {
-  font-weight: 800;
-}
-
-#restartBtn {
-  padding: 12px 30px;
+.summary {
+  padding: 20px;
   font-size: 16px;
-  background-color: #7c3aed;
-  color: #fff;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: 20px;
+  text-align: left;
+  flex-grow: 1;
+  margin-bottom: 100px;
+  margin-left: 20px;
 }
 
-#restartBtn:hover {
-  background-color: #6a21dc;
+#nextBtn {
+  margin: 20px auto;
+  padding: 10px 30px;
+  font-size: 1em;
+  background-color: #6b3dfd;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+#nextBtn2 {
+  margin: 20px auto 0 auto;
+  display: block;
+  padding: 10px 30px;
+  font-size: 1em;
+  background-color: #6b3dfd;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+#results-screen {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+#results-list {
+  flex: 1;
+  overflow-y: auto;
+  width: 100%;
+}
+
+#results-list p {
+  margin: 8px 0;
+}
+
+hr {
+  width: 100%;
+  max-width: 500px;
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 20px 0;
+}
+
+#homeBtn {
+  position: sticky;
+  bottom: 20px;
+  background-color: #6b3dfd;
+  z-index: 10;
+  margin: 20px auto 0 auto;
+  display: block;
+  padding: 10px 30px;
+  font-size: 1em;
+  background-color: #6b3dfd;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
 }
 
 

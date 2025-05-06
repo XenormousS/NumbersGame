@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   const nextBtn = document.getElementById("nextBtn");
+  const nextBtn2 = document.getElementById("nextBtn2");
   const introScreen = document.getElementById("intro-screen");
   const rulesScreen = document.getElementById("rules-screen");
   const countdownScreen = document.getElementById("countdown-screen");
@@ -11,6 +12,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const endScreen = document.getElementById("end-screen");
   const summaryText = document.getElementById("summary-text");
   const restartBtn = document.getElementById("restartBtn");
+  const resultsScreen = document.getElementById("results-screen");
+  const resultsList = document.getElementById("results-list");
+  const homeBtn = document.getElementById("homeBtn");
 
   let currentRound = 0;
   const totalRounds = 12;
@@ -22,6 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let comboStreak = 0;
   let timeExpired = false;
   let bonusMultiplier = 1;
+  let successfulRounds = 0;
 
   const percentIncreases = [0, 0.15, 0.20, 0.25, 0.27, 0.29, 0.31, 0.33, 0.35, 0.37, 0.39, 0.40];
 
@@ -29,6 +34,44 @@ document.addEventListener("DOMContentLoaded", function () {
     nextBtn.addEventListener("click", function () {
       introScreen.style.display = "none";
       rulesScreen.style.display = "block";
+    });
+  }
+
+  if (nextBtn2) {
+    nextBtn2.addEventListener("click", function () {
+      endScreen.style.display = "none";
+      resultsScreen.style.display = "block";
+  
+      saveResult(totalScore);
+      showResults();
+    });
+  }
+
+  if (homeBtn) {
+    homeBtn.addEventListener("click", function () {
+
+      rulesScreen.style.display = "none";
+      countdownScreen.style.display = "none";
+      document.getElementById("game-screen").style.display = "none";
+      gameHeader.style.display = "none";
+      endScreen.style.display = "none";
+      resultsScreen.style.display = "none";
+  
+
+      introScreen.style.display = "block";
+  
+
+      currentRound = 0;
+      timeLeft = 60;
+      timerStarted = false;
+      lastScore = 42;
+      totalScore = 0;
+      comboStreak = 0;
+      timeExpired = false;
+      bonusMultiplier = 1;
+      successfulRounds = 0;
+  
+      clearInterval(roundTimer);
     });
   }
 
@@ -141,6 +184,7 @@ numbers.forEach((num) => {
   div.addEventListener('click', () => {
     const levelIndex = Math.min(currentRound - 1, percentIncreases.length - 1);
     if (num === targetNumber) {
+      successfulRounds++;
       const levelBonus = percentIncreases[levelIndex];
       const gainedBase = Math.floor(lastScore + lastScore * levelBonus);
   
@@ -219,6 +263,24 @@ requestAnimationFrame(() => {
     bonusEl.textContent = `БОНУС ${filled}${empty}x${bonusMultiplier}`;
   }
 
+  function saveResult(score) {
+    const prev = JSON.parse(localStorage.getItem("results") || "[]");
+    prev.push(score);
+    prev.sort((a, b) => b - a);
+    localStorage.setItem("results", JSON.stringify(prev.slice(0, 5)));
+  }
+  
+  function showResults() {
+    const results = JSON.parse(localStorage.getItem("results") || "[]");
+  
+    resultsList.innerHTML = `
+      <p><strong>Текущий результат:</strong> ${totalScore}</p>
+      <hr>
+      <p><strong>Лучшие результаты:</strong></p>
+      ${results.map((s, i) => `<p>${i + 1}) ${s} очков</p>`).join("")}
+    `;
+  }
+
   function endGame() {
     clearInterval(roundTimer);
     grid.innerHTML = '';
@@ -232,11 +294,37 @@ requestAnimationFrame(() => {
     document.getElementById("game-screen").style.display = "none";
     endScreen.style.display = "block";
   
+    const scoreText = totalScore;
+    const correctAnswers = successfulRounds;
+    const accuracyPercent = Math.round((correctAnswers / totalRounds) * 100);
+  
     summaryText.innerHTML = `
-      <p>Вы набрали <strong>${totalScore}</strong> очков.</p>
-      <p>Пройдено уровней: <strong>${currentRound - 1}</strong> из ${totalRounds}.</p>
+      <p>Вы набрали <strong>${scoreText}</strong> очков.</p>
+      <p>Успешно пройдено уровней: <strong>${correctAnswers}</strong> из ${totalRounds}.</p>
+      <p>Точность: <strong>${accuracyPercent}%</strong></p>
       <p>Время игры: <strong>${minutes}:${String(seconds).padStart(2, '0')}</strong></p>
     `;
+  
+    const statElements = document.querySelectorAll("#end-screen .stats b");
+  
+    if (statElements.length === 3) {
+      statElements[0].textContent = scoreText;
+      statElements[1].textContent = `${correctAnswers} из ${totalRounds}`;
+      statElements[2].textContent = `${accuracyPercent}%`;
+    }
   }
-
+  if (restartBtn) {
+    restartBtn.addEventListener("click", function () {
+      resultsScreen.style.display = "none";
+      introScreen.style.display = "block";
+  
+      currentRound = 0;
+      timeLeft = 60;
+      totalScore = 0;
+      comboStreak = 0;
+      bonusMultiplier = 1;
+      timeExpired = false;
+      gameHeader.style.display = "none";
+    });
+  }
 });
